@@ -50,10 +50,9 @@
 								<p>Hi, my name is Andy, and I am an aspiring software programmer currently studying at 
 								 Queens College. You can view my <a href="https://docs.google.com/document/d/1c6vT0yayof105F9Uwhxpm0nIk_FME-6fiyWg2pKFLK0/edit?usp=sharing" target="_blank">resume</a>. 
 								<p>
-								 One of my primary <a href="#about">goal</a> as I transition into the field of software development is to create an app that will be used by 1,000 people. 
-								 This project is not just about achieving a numerical milestone; it is about delivering genuine value to users through a well-designed, functional, 
-								 and user-friendly application
-								</p>
+									One of my key <a href="#about">goal</a> as I transition into the field of software development is to build practical, user-focused applications. 
+									As I continue to grow in the field of software development, I strive to apply my skills through hands-on projects that challenge and inspire me. 
+									Let me share one of my current projects, where I’ve had the opportunity to work on a family-friendly card game.
 							</article>
 						
 						<!-- Work 
@@ -73,29 +72,30 @@
 									</span>
 								</div>
 								<p>
-									I am an aspiring <a href="#intro">software engineer</a> with a passion for developing innovative solutions. 
 									Currently, I am collaborating on the development of a family-friendly digital card game, <a href = "https://github.com/TurtleArmyMc/coup-game" target = "_blank"> Coup </a>, utilizing TypeScript and HTML 
-									to create an engaging and interactive user experience. I’m always excited to <a href="#contact">connect</a> 
-									with others who share my passion for technology and innovation.
+									to create an engaging and interactive user experience. Additionally, I’m planning to develop a search engine in the near future, expanding my technical expertise and further challenging my problem-solving skills
+									I’m always excited to <a href="#contact">connect</a> with others who share my passion for technology and innovation.
 								</p>
 							</article>
 
 						<!-- Contact -->
 							<article id="contact">
+								<!-- <div class = "fields"></div> -->
 								<h2 class="major">Contact</h2>
-								<form method="post" action="#">
+								<form onsubmit="((e) => { window.open(`mailto:linandy321@gmail.com?subject=To%20Andy%20Lin&body=${encodeURI(document.getElementById('message').value + '\n' + 
+									'From, ' + document.getElementById('name').value)}`, '_blank').focus(); e.preventDefault(); })()">
 									<div class="fields">
 										<div class="field half">
 											<label for="name">Name</label>
-											<input type="text" name="name" id="name" />
+											<input type="text" name="name" id="name" required />
 										</div>
 										<div class="field half">
 											<label for="email">Email</label>
-											<input type="text" name="email" id="email" />
+											<input type="email" name="email" id="email" required />
 										</div>
 										<div class="field">
 											<label for="message">Message</label>
-											<textarea name="message" id="message" rows="4"></textarea>
+											<textarea name="message" id="message" rows="4" required></textarea>
 										</div>
 									</div>
 									<ul class="actions">
@@ -104,10 +104,8 @@
 									</ul>
 								</form>
 								<ul class="icons">
-									<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-									<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="https://www.linkedin.com/in/andy-lin-73ba372b7/" class="icon brands fa-linkedin"><span class="label">Linkedin/span></a></li>
+									<li><a href="https://github.com/ANDYLIN05" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 								</ul>
 							</article>
 
