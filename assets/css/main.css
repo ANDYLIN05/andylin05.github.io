@@ -1140,9 +1140,12 @@ input, select, textarea {
 			-ms-transition-delay: 0.75s;
 			transition-delay: 0.75s;
 			background-image: linear-gradient(to top, rgba(19, 21, 25, 0.5), rgba(19, 21, 25, 0.5)), url("../../images/overlay.png");
-			background-size: auto, 256px 256px;
-			background-position: center, center;
-			background-repeat: no-repeat, repeat;
+			background-size: auto,
+ 256px 256px;
+			background-position: center,
+ center;
+			background-repeat: no-repeat,
+ repeat;
 			z-index: 2;
 		}
 
@@ -1656,3 +1659,76 @@ input, select, textarea {
 		body.is-preload #footer {
 			opacity: 0;
 		}
+
+.scroll-arrow {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  font-size: 1.5rem;
+  color: #00aaff;
+  background-color: transparent;
+  text-decoration: none;
+  border-bottom: none;
+  z-index: 1000;
+  animation: bounce 2s infinite;
+}
+
+.scroll-arrow:hover {
+  color: #66ccff;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+.corner-arrow {
+  position: fixed;
+  bottom: 30px;
+  font-size: 1.3rem;
+  color: #00aaff;
+  text-decoration: none;
+  border-bottom: none;
+  background: none;
+  z-index: 1000;
+  padding: 8px;
+  animation: bounce 2s infinite;
+}
+
+.corner-arrow.left {
+  left: 30px;
+}
+
+.corner-arrow.right {
+  right: 30px;
+}
+
+.corner-arrow:hover {
+  transform: scale(1.2);
+}
+
+.contact-arrow {
+  position: fixed;
+  bottom: 30px;
+  font-size: 1.3rem;
+  color: #00aaff;
+  text-decoration: none;
+  border-bottom: none;
+  background: none;
+  z-index: 1000;
+  padding: 8px;
+  animation: bounce 2s infinite;
+}
+
+.contact-arrow.left {
+  left: 30px;
+  bottom: 10px;
+}
+
+.contact-arrow.right {
+  right: 30px;
+}
+
+.contact-arrow:hover {
+  transform: scale(1.2);
+}
