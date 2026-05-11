@@ -1,0 +1,5 @@
+name = "andy-chatbot"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# Set the secret with: npx wrangler secret put GEMINI_API_KEY

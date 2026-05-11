@@ -1,17 +1,90 @@
 <!DOCTYPE HTML>
-<!--
-	Dimension by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 	<head>
-		<title>Dimension by HTML5 UP</title>
+		<title>Andy Lin</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/fontawesome-all.min.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			#chatbot-toggle {
+				position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 10000;
+				width: 56px; height: 56px; border-radius: 50%; border: none;
+				background: #ffffff; color: #1b1f22;
+				font-size: 1.4rem; cursor: pointer;
+				box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+				display: flex; align-items: center; justify-content: center;
+				transition: transform 0.2s ease;
+			}
+			#chatbot-toggle:hover { transform: scale(1.08); }
+			#chatbot-toggle.open { background: #ff6b6b; color: #fff; }
+
+			#chatbot-window {
+				position: fixed; bottom: 5.5rem; right: 1.5rem; z-index: 10000;
+				width: 340px; max-width: calc(100vw - 3rem);
+				height: 460px; max-height: calc(100vh - 8rem);
+				background: rgba(27,31,34,0.96);
+				border: 1px solid rgba(255,255,255,0.15);
+				border-radius: 8px;
+				box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+				display: none; flex-direction: column;
+				font-family: inherit; color: #ffffff;
+				backdrop-filter: blur(8px);
+			}
+			#chatbot-window.open { display: flex; }
+
+			#chatbot-header {
+				padding: 0.85rem 1rem;
+				border-bottom: 1px solid rgba(255,255,255,0.12);
+				font-weight: 600; font-size: 0.95rem;
+				display: flex; align-items: center; gap: 0.5rem;
+			}
+			#chatbot-header .fa-gem { color: #ffffff; opacity: 0.7; }
+
+			#chatbot-messages {
+				flex: 1; overflow-y: auto; padding: 1rem;
+				display: flex; flex-direction: column; gap: 0.6rem;
+				font-size: 0.88rem; line-height: 1.45;
+			}
+			.chatbot-msg {
+				padding: 0.55rem 0.8rem; border-radius: 12px;
+				max-width: 85%; word-wrap: break-word;
+			}
+			.chatbot-msg.bot {
+				background: rgba(255,255,255,0.08); align-self: flex-start;
+				border-bottom-left-radius: 3px;
+			}
+			.chatbot-msg.user {
+				background: #ffffff; color: #1b1f22; align-self: flex-end;
+				border-bottom-right-radius: 3px;
+			}
+			.chatbot-msg.typing { opacity: 0.6; font-style: italic; }
+
+			#chatbot-form {
+				display: flex; gap: 0.4rem; padding: 0.6rem;
+				border-top: 1px solid rgba(255,255,255,0.12);
+			}
+			#chatbot-input {
+				flex: 1; background: rgba(255,255,255,0.08);
+				border: 1px solid rgba(255,255,255,0.15);
+				border-radius: 6px; padding: 0.5rem 0.7rem;
+				color: #ffffff; font-family: inherit; font-size: 0.88rem;
+				outline: none;
+			}
+			#chatbot-input:focus { border-color: rgba(255,255,255,0.4); }
+			#chatbot-send {
+				background: #ffffff; color: #1b1f22; border: none;
+				border-radius: 6px; padding: 0 0.85rem; cursor: pointer;
+				font-weight: 600; font-size: 0.85rem;
+			}
+			#chatbot-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+			@media (max-width: 480px) {
+				#chatbot-window { right: 0.75rem; bottom: 5rem; width: calc(100vw - 1.5rem); }
+				#chatbot-toggle { right: 1rem; bottom: 1rem; }
+			}
+		</style>
 	</head>
 	<body class="is-preload">
 
@@ -26,17 +99,13 @@
 						<div class="content">
 							<div class="inner">
 								<h1>Andy Lin</h1>
-								<p>Welcome <a href="https://html5up.net"><br />
-								<a href="https://html5up.net/license"></a></p>
 							</div>
 						</div>
 						<nav>
 							<ul>
 								<li><a href="#intro">Intro</a></li>
-								<!--<li><a href="#work">Work</a></li>-->
 								<li><a href="#about">About</a></li>
 								<li><a href="#contact">Contact</a></li>
-								<!--<li><a href="#elements">Elements</a></li>-->
 							</ul>
 						</nav>
 					</header>
@@ -59,14 +128,6 @@
 								</a>
 
 							</article>
-						<!-- Work 
-							<article id="work">
-								<h2 class="major">Work</h2>
-								<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
-								<p>Adipiscing magna sed dolor elit. Praesent eleifend dignissim arcu, at eleifend sapien imperdiet ac. Aliquam erat volutpat. Praesent urna nisi, fringila lorem et vehicula lacinia quam. Integer sollicitudin mauris nec lorem luctus ultrices.</p>
-								<p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus pharetra. Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus amet feugiat tempus.</p>
-							</article>
-						-->
 						<!-- About -->
 							<article id="about" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
 								<h2 class="major">About</h2>
@@ -124,259 +185,98 @@
 								<a href="#about" class="contact-arrow left scroll-arrow"><i class="fas fa-arrow-left"></i></a>
 							</article>
 
-						<!-- Elements -->
-							<article id="elements">
-								<h2 class="major">Elements</h2>
-
-								<section>
-									<h3 class="major">Text</h3>
-									<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
-									This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
-									This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
-									<hr />
-									<h2>Heading Level 2</h2>
-									<h3>Heading Level 3</h3>
-									<h4>Heading Level 4</h4>
-									<h5>Heading Level 5</h5>
-									<h6>Heading Level 6</h6>
-									<hr />
-									<h4>Blockquote</h4>
-									<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
-									<h4>Preformatted</h4>
-									<pre><code>i = 0;
-
-while (!deck.isInOrder()) {
-    print 'Iteration ' + i;
-    deck.shuffle();
-    i++;
-}
-
-print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
-								</section>
-
-								<section>
-									<h3 class="major">Lists</h3>
-
-									<h4>Unordered</h4>
-									<ul>
-										<li>Dolor pulvinar etiam.</li>
-										<li>Sagittis adipiscing.</li>
-										<li>Felis enim feugiat.</li>
-									</ul>
-
-									<h4>Alternate</h4>
-									<ul class="alt">
-										<li>Dolor pulvinar etiam.</li>
-										<li>Sagittis adipiscing.</li>
-										<li>Felis enim feugiat.</li>
-									</ul>
-
-									<h4>Ordered</h4>
-									<ol>
-										<li>Dolor pulvinar etiam.</li>
-										<li>Etiam vel felis viverra.</li>
-										<li>Felis enim feugiat.</li>
-										<li>Dolor pulvinar etiam.</li>
-										<li>Etiam vel felis lorem.</li>
-										<li>Felis enim et feugiat.</li>
-									</ol>
-									<h4>Icons</h4>
-									<ul class="icons">
-										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-										<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
-									</ul>
-
-									<h4>Actions</h4>
-									<ul class="actions">
-										<li><a href="#" class="button primary">Default</a></li>
-										<li><a href="#" class="button">Default</a></li>
-									</ul>
-									<ul class="actions stacked">
-										<li><a href="#" class="button primary">Default</a></li>
-										<li><a href="#" class="button">Default</a></li>
-									</ul>
-								</section>
-
-								<section>
-									<h3 class="major">Table</h3>
-									<h4>Default</h4>
-									<div class="table-wrapper">
-										<table>
-											<thead>
-												<tr>
-													<th>Name</th>
-													<th>Description</th>
-													<th>Price</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>Item One</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Two</td>
-													<td>Vis ac commodo adipiscing arcu aliquet.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Three</td>
-													<td> Morbi faucibus arcu accumsan lorem.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Four</td>
-													<td>Vitae integer tempus condimentum.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Five</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-											</tbody>
-											<tfoot>
-												<tr>
-													<td colspan="2"></td>
-													<td>100.00</td>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-
-									<h4>Alternate</h4>
-									<div class="table-wrapper">
-										<table class="alt">
-											<thead>
-												<tr>
-													<th>Name</th>
-													<th>Description</th>
-													<th>Price</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>Item One</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Two</td>
-													<td>Vis ac commodo adipiscing arcu aliquet.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Three</td>
-													<td> Morbi faucibus arcu accumsan lorem.</td>
-													<td>29.99</td>
-												</tr>
-												<tr>
-													<td>Item Four</td>
-													<td>Vitae integer tempus condimentum.</td>
-													<td>19.99</td>
-												</tr>
-												<tr>
-													<td>Item Five</td>
-													<td>Ante turpis integer aliquet porttitor.</td>
-													<td>29.99</td>
-												</tr>
-											</tbody>
-											<tfoot>
-												<tr>
-													<td colspan="2"></td>
-													<td>100.00</td>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-								</section>
-
-								<section>
-									<h3 class="major">Buttons</h3>
-									<ul class="actions">
-										<li><a href="#" class="button primary">Primary</a></li>
-										<li><a href="#" class="button">Default</a></li>
-									</ul>
-									<ul class="actions">
-										<li><a href="#" class="button">Default</a></li>
-										<li><a href="#" class="button small">Small</a></li>
-									</ul>
-									<ul class="actions">
-										<li><a href="#" class="button primary icon solid fa-download">Icon</a></li>
-										<li><a href="#" class="button icon solid fa-download">Icon</a></li>
-									</ul>
-									<ul class="actions">
-										<li><span class="button primary disabled">Disabled</span></li>
-										<li><span class="button disabled">Disabled</span></li>
-									</ul>
-								</section>
-
-								<section>
-									<h3 class="major">Form</h3>
-									<form method="post" action="#">
-										<div class="fields">
-											<div class="field half">
-												<label for="demo-name">Name</label>
-												<input type="text" name="demo-name" id="demo-name" value="" placeholder="Jane Doe" />
-											</div>
-											<div class="field half">
-												<label for="demo-email">Email</label>
-												<input type="email" name="demo-email" id="demo-email" value="" placeholder="jane@untitled.tld" />
-											</div>
-											<div class="field">
-												<label for="demo-category">Category</label>
-												<select name="demo-category" id="demo-category">
-													<option value="">-</option>
-													<option value="1">Manufacturing</option>
-													<option value="1">Shipping</option>
-													<option value="1">Administration</option>
-													<option value="1">Human Resources</option>
-												</select>
-											</div>
-											<div class="field half">
-												<input type="radio" id="demo-priority-low" name="demo-priority" checked>
-												<label for="demo-priority-low">Low</label>
-											</div>
-											<div class="field half">
-												<input type="radio" id="demo-priority-high" name="demo-priority">
-												<label for="demo-priority-high">High</label>
-											</div>
-											<div class="field half">
-												<input type="checkbox" id="demo-copy" name="demo-copy">
-												<label for="demo-copy">Email me a copy</label>
-											</div>
-											<div class="field half">
-												<input type="checkbox" id="demo-human" name="demo-human" checked>
-												<label for="demo-human">Not a robot</label>
-											</div>
-											<div class="field">
-												<label for="demo-message">Message</label>
-												<textarea name="demo-message" id="demo-message" placeholder="Enter your message" rows="6"></textarea>
-											</div>
-										</div>
-										<ul class="actions">
-											<li><input type="submit" value="Send Message" class="primary" /></li>
-											<li><input type="reset" value="Reset" /></li>
-										</ul>
-									</form>
-								</section>
-
-							</article>
-
 					</div>
 
 				<!-- Footer -->
 					<footer id="footer">
-						<p class="copyright">&copy; Untitled. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+						<p class="copyright">&copy; Andy Lin.</p>
 					</footer>
 
 			</div>
 
 		<!-- BG -->
 			<div id="bg"></div>
+
+		<!-- Chatbot -->
+			<button id="chatbot-toggle" aria-label="Open chat" title="Ask me about Andy">
+				<i class="fas fa-comment-dots"></i>
+			</button>
+			<div id="chatbot-window" role="dialog" aria-label="Chat with Andy bot">
+				<div id="chatbot-header">
+					<span class="icon fa-gem"></span>
+					Ask about Andy
+				</div>
+				<div id="chatbot-messages"></div>
+				<form id="chatbot-form" autocomplete="off">
+					<input id="chatbot-input" type="text" placeholder="Ask about my experience, projects..." maxlength="500" required />
+					<button id="chatbot-send" type="submit">Send</button>
+				</form>
+			</div>
+			<script>
+				(function() {
+					const ENDPOINT = "https://andy-chatbot.andylin-web.workers.dev";
+
+					const toggle = document.getElementById("chatbot-toggle");
+					const win = document.getElementById("chatbot-window");
+					const messages = document.getElementById("chatbot-messages");
+					const form = document.getElementById("chatbot-form");
+					const input = document.getElementById("chatbot-input");
+					const sendBtn = document.getElementById("chatbot-send");
+
+					function addMsg(text, who) {
+						const div = document.createElement("div");
+						div.className = "chatbot-msg " + who;
+						div.textContent = text;
+						messages.appendChild(div);
+						messages.scrollTop = messages.scrollHeight;
+						return div;
+					}
+
+					addMsg("Hi! Ask me anything about Andy - his experience, projects, skills, or what he's working on.", "bot");
+
+					toggle.addEventListener("click", () => {
+						const isOpen = win.classList.toggle("open");
+						toggle.classList.toggle("open", isOpen);
+						toggle.innerHTML = isOpen
+							? '<i class="fas fa-times"></i>'
+							: '<i class="fas fa-comment-dots"></i>';
+						if (isOpen) setTimeout(() => input.focus(), 50);
+					});
+
+					form.addEventListener("submit", async (e) => {
+						e.preventDefault();
+						const text = input.value.trim();
+						if (!text) return;
+
+						addMsg(text, "user");
+						input.value = "";
+						sendBtn.disabled = true;
+						const typing = addMsg("Thinking…", "bot");
+						typing.classList.add("typing");
+
+						try {
+							const res = await fetch(ENDPOINT, {
+								method: "POST",
+								headers: { "Content-Type": "application/json" },
+								body: JSON.stringify({ message: text }),
+							});
+							const data = await res.json();
+							typing.remove();
+							if (!res.ok) {
+								addMsg(data.error || "Something went wrong. Try again?", "bot");
+							} else {
+								addMsg(data.reply, "bot");
+							}
+						} catch (err) {
+							typing.remove();
+							addMsg("Couldn't reach the server. Try again in a moment.", "bot");
+						} finally {
+							sendBtn.disabled = false;
+							input.focus();
+						}
+					});
+				})();
+			</script>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
