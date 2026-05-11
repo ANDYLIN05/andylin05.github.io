@@ -1,290 +1,457 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
-		<title>Andy Lin</title>
+		<title>Andy Lin · Software Engineer</title>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content="Andy Lin · software engineer. Queens College CS '25, currently interning at ThermoVerse." />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="assets/css/fontawesome-all.min.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="assets/css/main.css" />
 		<style>
+			/* Chatbot widget · cyan accent */
 			#chatbot-toggle {
 				position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 10000;
-				width: 56px; height: 56px; border-radius: 50%; border: none;
-				background: #ffffff; color: #1b1f22;
-				font-size: 1.4rem; cursor: pointer;
-				box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+				width: 56px; height: 56px; border-radius: 50%;
+				border: 1px solid rgba(34, 211, 238, 0.4);
+				background: #11161d; color: #22d3ee;
+				font-size: 1.3rem; cursor: pointer;
+				box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 24px rgba(34, 211, 238, 0.15);
 				display: flex; align-items: center; justify-content: center;
-				transition: transform 0.2s ease;
+				transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 			}
-			#chatbot-toggle:hover { transform: scale(1.08); }
-			#chatbot-toggle.open { background: #ff6b6b; color: #fff; }
+			#chatbot-toggle:hover { transform: scale(1.06); border-color: #22d3ee; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 0 32px rgba(34, 211, 238, 0.4); }
+			#chatbot-toggle.open { background: #22d3ee; color: #0a0e14; border-color: #22d3ee; }
 
 			#chatbot-window {
 				position: fixed; bottom: 5.5rem; right: 1.5rem; z-index: 10000;
 				width: 340px; max-width: calc(100vw - 3rem);
 				height: 460px; max-height: calc(100vh - 8rem);
-				background: rgba(27,31,34,0.96);
-				border: 1px solid rgba(255,255,255,0.15);
-				border-radius: 8px;
-				box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+				background: rgba(17, 22, 29, 0.97);
+				border: 1px solid rgba(255, 255, 255, 0.12);
+				border-radius: 10px;
+				box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 				display: none; flex-direction: column;
-				font-family: inherit; color: #ffffff;
-				backdrop-filter: blur(8px);
+				font-family: "Inter", sans-serif; color: #e6edf3;
+				backdrop-filter: blur(12px);
+				-webkit-backdrop-filter: blur(12px);
 			}
 			#chatbot-window.open { display: flex; }
 
 			#chatbot-header {
 				padding: 0.85rem 1rem;
-				border-bottom: 1px solid rgba(255,255,255,0.12);
-				font-weight: 600; font-size: 0.95rem;
-				display: flex; align-items: center; gap: 0.5rem;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+				font-family: "JetBrains Mono", monospace;
+				font-weight: 500; font-size: 0.85rem;
+				color: #22d3ee;
+				display: flex; align-items: center; gap: 0.55rem;
 			}
-			#chatbot-header .fa-gem { color: #ffffff; opacity: 0.7; }
+			#chatbot-header .dot {
+				width: 8px; height: 8px; background: #22d3ee; border-radius: 50%;
+				box-shadow: 0 0 8px rgba(34, 211, 238, 0.8);
+				animation: cb-pulse 2s ease-in-out infinite;
+			}
+			@keyframes cb-pulse {
+				0%, 100% { opacity: 1; transform: scale(1); }
+				50% { opacity: 0.55; transform: scale(0.8); }
+			}
 
 			#chatbot-messages {
 				flex: 1; overflow-y: auto; padding: 1rem;
-				display: flex; flex-direction: column; gap: 0.6rem;
-				font-size: 0.88rem; line-height: 1.45;
+				display: flex; flex-direction: column; gap: 0.55rem;
+				font-size: 0.88rem; line-height: 1.5;
 			}
 			.chatbot-msg {
-				padding: 0.55rem 0.8rem; border-radius: 12px;
+				padding: 0.55rem 0.8rem; border-radius: 10px;
 				max-width: 85%; word-wrap: break-word;
 			}
 			.chatbot-msg.bot {
-				background: rgba(255,255,255,0.08); align-self: flex-start;
+				background: rgba(255, 255, 255, 0.05); align-self: flex-start;
 				border-bottom-left-radius: 3px;
 			}
 			.chatbot-msg.user {
-				background: #ffffff; color: #1b1f22; align-self: flex-end;
+				background: #22d3ee; color: #0a0e14; align-self: flex-end;
 				border-bottom-right-radius: 3px;
 			}
-			.chatbot-msg.typing { opacity: 0.6; font-style: italic; }
+			.chatbot-msg.typing { opacity: 0.55; font-style: italic; }
 
 			#chatbot-form {
 				display: flex; gap: 0.4rem; padding: 0.6rem;
-				border-top: 1px solid rgba(255,255,255,0.12);
+				border-top: 1px solid rgba(255, 255, 255, 0.08);
 			}
 			#chatbot-input {
-				flex: 1; background: rgba(255,255,255,0.08);
-				border: 1px solid rgba(255,255,255,0.15);
+				flex: 1; background: rgba(255, 255, 255, 0.05);
+				border: 1px solid rgba(255, 255, 255, 0.12);
 				border-radius: 6px; padding: 0.5rem 0.7rem;
-				color: #ffffff; font-family: inherit; font-size: 0.88rem;
+				color: #e6edf3; font-family: inherit; font-size: 0.88rem;
 				outline: none;
 			}
-			#chatbot-input:focus { border-color: rgba(255,255,255,0.4); }
+			#chatbot-input:focus { border-color: #22d3ee; }
 			#chatbot-send {
-				background: #ffffff; color: #1b1f22; border: none;
-				border-radius: 6px; padding: 0 0.85rem; cursor: pointer;
+				background: #22d3ee; color: #0a0e14; border: none;
+				border-radius: 6px; padding: 0 0.9rem; cursor: pointer;
 				font-weight: 600; font-size: 0.85rem;
 			}
 			#chatbot-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
+			/* Ping ripple to draw the eye until first interaction */
+			#chatbot-toggle::before {
+				content: "";
+				position: absolute;
+				inset: -3px;
+				border-radius: 50%;
+				border: 2px solid #22d3ee;
+				opacity: 0;
+				pointer-events: none;
+				animation: ping 2.4s ease-out infinite;
+			}
+			#chatbot-toggle.interacted::before,
+			#chatbot-toggle.open::before { animation: none; }
+
+			@keyframes ping {
+				0%   { transform: scale(1);   opacity: 0.7; }
+				100% { transform: scale(1.5); opacity: 0; }
+			}
+
+			/* "AI" badge on the toggle */
+			#chatbot-toggle .ai-badge {
+				position: absolute;
+				top: -3px;
+				right: -3px;
+				background: #22d3ee;
+				color: #0a0e14;
+				font-family: "JetBrains Mono", monospace;
+				font-size: 0.6rem;
+				font-weight: 700;
+				line-height: 1;
+				padding: 3px 5px;
+				border-radius: 6px;
+				border: 2px solid #0a0e14;
+				letter-spacing: 0.04em;
+				box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+			}
+			#chatbot-toggle.open .ai-badge { display: none; }
+
+			/* Callout speech bubble next to the toggle */
+			#chatbot-callout {
+				position: fixed;
+				bottom: 2.1rem;
+				right: 5.4rem;
+				z-index: 9999;
+				background: #11161d;
+				color: #e6edf3;
+				border: 1px solid rgba(34, 211, 238, 0.4);
+				border-radius: 12px;
+				padding: 0.55rem 2.2rem 0.55rem 0.9rem;
+				font-family: "Inter", sans-serif;
+				font-size: 0.85rem;
+				white-space: nowrap;
+				box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 28px rgba(34, 211, 238, 0.22);
+				opacity: 0;
+				transform: translateX(10px) scale(0.96);
+				transform-origin: right center;
+				pointer-events: none;
+				transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+			}
+			#chatbot-callout.show {
+				opacity: 1;
+				transform: translateX(0) scale(1);
+				pointer-events: auto;
+			}
+			#chatbot-callout .callout-emoji { margin-right: 0.15rem; }
+			#chatbot-callout .callout-close {
+				position: absolute;
+				right: 0.5rem;
+				top: 50%;
+				transform: translateY(-50%);
+				background: transparent;
+				border: none;
+				color: #8b949e;
+				font-size: 1.15rem;
+				line-height: 1;
+				cursor: pointer;
+				padding: 0 0.25rem;
+			}
+			#chatbot-callout .callout-close:hover { color: #22d3ee; }
+			#chatbot-callout::after {
+				content: "";
+				position: absolute;
+				right: -6px;
+				top: 50%;
+				transform: translateY(-50%) rotate(45deg);
+				width: 10px;
+				height: 10px;
+				background: #11161d;
+				border-right: 1px solid rgba(34, 211, 238, 0.4);
+				border-top: 1px solid rgba(34, 211, 238, 0.4);
+			}
+
 			@media (max-width: 480px) {
 				#chatbot-window { right: 0.75rem; bottom: 5rem; width: calc(100vw - 1.5rem); }
 				#chatbot-toggle { right: 1rem; bottom: 1rem; }
+				#chatbot-callout { display: none; }
 			}
 		</style>
 	</head>
-	<body class="is-preload">
+	<body>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+		<div class="aurora" aria-hidden="true"></div>
 
-				<!-- Header -->
-					<header id="header">
-						<div class="logo">
-							<span class="icon fa-gem"></span>
+		<nav class="nav">
+			<div class="nav-inner">
+				<a class="nav-logo" href="#intro">andy<span class="accent">.lin</span></a>
+				<ul class="nav-links">
+					<li><a href="#intro">intro</a></li>
+					<li><a href="#about">about</a></li>
+					<li><a href="#contact">contact</a></li>
+				</ul>
+			</div>
+		</nav>
+
+		<main>
+
+			<section id="intro">
+				<div class="status-pill">
+					<span class="dot"></span>
+					currently interning @ ThermoVerse
+				</div>
+
+				<h1>Hi, I'm Andy<span class="cursor" aria-hidden="true"></span></h1>
+				<p class="lead">Software engineer building things on the web. Recent Queens College CS grad, focused on clean code, useful tools, and shipping fast.</p>
+
+				<ul class="intro-facts">
+					<li><strong>B.A. Computer Science</strong> · Queens College '25</li>
+					<li><strong>Interning</strong> @ <a href="https://www.linkedin.com/company/thermoverse/posts/?feedView=all" target="_blank" rel="noopener">ThermoVerse</a></li>
+					<li><strong>Based in</strong> New York</li>
+				</ul>
+
+				<div class="cta-row">
+					<a class="btn btn-primary" href="https://docs.google.com/document/d/1QcWzqwYQhW5hOzTYW-o6UHm13BNCGwlwszQIHP06IlI/edit?usp=sharing" target="_blank" rel="noopener">Resume <span class="ext">↗</span></a>
+					<a class="btn" href="https://github.com/ANDYLIN05" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
+					<a class="btn" href="https://www.linkedin.com/in/andy-lin-73ba372b7/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> LinkedIn</a>
+				</div>
+			</section>
+
+			<section id="about">
+				<div class="section-marker">
+					<span class="num">01</span>
+					<span class="name">about</span>
+				</div>
+				<h2>A little more</h2>
+				<div class="about-grid">
+					<img class="about-pic" src="images/ProfilePicture.jpg" alt="Andy Lin" />
+					<div class="about-text">
+						<p>My goal is to become a well-rounded software engineer. I recently built a project integrating the <a href="https://github.com/ANDYLIN05/PokiAPI-GoogleDriveUploader" target="_blank" rel="noopener">PokéAPI with the Google Drive API</a>, letting users fetch Pokémon sprites and upload them straight to their Drive.</p>
+						<p>This summer I'm interning at <a href="https://www.linkedin.com/company/thermoverse/posts/?feedView=all" target="_blank" rel="noopener">ThermoVerse</a>, building a mobile app to support their thermal control platform. Always excited to take on new challenges and collaborate, feel free to <a href="#contact">reach out</a>.</p>
+					</div>
+				</div>
+			</section>
+
+			<section id="contact">
+				<div class="section-marker">
+					<span class="num">02</span>
+					<span class="name">contact</span>
+				</div>
+				<h2>Get in touch</h2>
+				<p class="lead">Have a project, a role, or just want to say hi? Drop me a line.</p>
+
+				<form id="contact-form" action="https://formspree.io/f/mjkrrarv" method="POST">
+					<div class="fields">
+						<div class="field">
+							<label for="name">name</label>
+							<input type="text" name="name" id="name" required />
 						</div>
-						<div class="content">
-							<div class="inner">
-								<h1>Andy Lin</h1>
-							</div>
+						<div class="field">
+							<label for="email">email</label>
+							<input type="email" name="email" id="email" required />
 						</div>
-						<nav>
-							<ul>
-								<li><a href="#intro">Intro</a></li>
-								<li><a href="#about">About</a></li>
-								<li><a href="#contact">Contact</a></li>
-							</ul>
-						</nav>
-					</header>
-
-				<!-- Main -->
-					<div id="main">
-
-						<!-- Intro -->
-							<article id="intro">
-								<h2 class="major">Intro</h2>
-								<span class="image main"><img src="images/intro-banner.png" alt="" /></span>
-								<p>	Hi, I’m Andy, a recent graduate with a B.A. in Computer Science from Queens College (Class of 2025). 
-  									Feel free to take a look at my <a href="https://docs.google.com/document/d/1QcWzqwYQhW5hOzTYW-o6UHm13BNCGwlwszQIHP06IlI/edit?usp=sharing" target="_blank">resume</a> to learn more about my experience and skills.
-								<p>
-									My goal is to become a well-rounded software engineer. Recently, I completed a project integrating the PokéAPI with the Google Drive API, and this summer I'm interning at a startup called ThermoVerse. You can learn more about my current <a href="#about">projects</a> and what I’m working on this summer.
-								</p>
-
-								<a href="#about" class="scroll-arrow" title="Go to About">
-									<i class="fas fa-arrow-right"></i>
-								</a>
-
-							</article>
-						<!-- About -->
-							<article id="about" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-								<h2 class="major">About</h2>
-								<div>
-									<span class="image main">
-										<img src="images/ProfilePicture.jpg" alt="" style ="width: 150px; height: auto;" />
-									</span>
-								</div>
-								<p>
-									You can check out my most recent project, a <a href="https://github.com/ANDYLIN05/PokiAPI-GoogleDriveUploader" target="_blank">PokéAPI to Google Drive uploader</a>, which lets users fetch Pokémon sprites and upload them directly to their Google Drive. This summer, I'm interning at <a href="https://www.linkedin.com/company/thermoverse/posts/?feedView=all" target="_blank">ThermoVerse</a>, 
-  									where I’ll be building a mobile app to support their thermal control platform. I'm always excited to take on new challenges and collaborate with others, feel free to <a href="#contact">reach out</a>.
-								</p>
-
-								<!-- Arrows for About navigation -->
-								<a href="#intro" class="corner-arrow left" title="Back to Intro">
-									<i class="fas fa-arrow-left"></i>
-								</a>
-								<a href="#contact" class="corner-arrow right" title="Go to Contact">
-									<i class="fas fa-arrow-right"></i>
-								</a>
-							</article>
-
-						<!-- Contact -->
-							<article id="contact">
-								<h2 class="major">Contact</h2>
-
-								<form action="https://formspree.io/f/mjkrrarv" method="POST">
-									<div class="fields">
-										<div class="field half">
-											<label for="name">Name</label>
-											<input type="text" name="name" id="name" required />
-									</div>
-									<div class="field half">
-										<label for="email">Email</label>
-										<input type="email" name="email" id="email" required />
-									</div>
-									<div class="field">
-											<label for="message">Message</label>
-											<textarea name="message" id="message" rows="4" required></textarea>
-										</div>
-									</div>
-
-									<ul class="actions">
-										<li><button type="submit" class="primary">Send Message</button></li>
-										<li><button type="reset">Reset</button></li>
-									</ul>
-								</form>
-
-							<ul class="icons">
-								<li><a href="https://www.linkedin.com/in/andy-lin-73ba372b7/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-								<li><a href="https://github.com/ANDYLIN05" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-							</ul>
-
-							<!-- Back to About Arrow -->
-								<a href="#about" class="contact-arrow left scroll-arrow"><i class="fas fa-arrow-left"></i></a>
-							</article>
-
+						<div class="field full">
+							<label for="message">message</label>
+							<textarea name="message" id="message" rows="5" required></textarea>
+						</div>
 					</div>
 
-				<!-- Footer -->
-					<footer id="footer">
-						<p class="copyright">&copy; Andy Lin.</p>
-					</footer>
+					<div class="form-actions">
+						<button type="submit" class="btn btn-primary">Send message</button>
+						<button type="reset" class="btn">Reset</button>
+					</div>
+				</form>
 
-			</div>
+				<div id="contact-status" role="status" aria-live="polite"></div>
 
-		<!-- BG -->
-			<div id="bg"></div>
+				<ul class="socials">
+					<li><a href="https://www.linkedin.com/in/andy-lin-73ba372b7/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a></li>
+					<li><a href="https://github.com/ANDYLIN05" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a></li>
+				</ul>
+			</section>
+
+		</main>
+
+		<footer>
+			<p>&copy; Andy Lin</p>
+		</footer>
 
 		<!-- Chatbot -->
-			<button id="chatbot-toggle" aria-label="Open chat" title="Ask me about Andy">
-				<i class="fas fa-comment-dots"></i>
-			</button>
-			<div id="chatbot-window" role="dialog" aria-label="Chat with Andy bot">
-				<div id="chatbot-header">
-					<span class="icon fa-gem"></span>
-					Ask about Andy
-				</div>
-				<div id="chatbot-messages"></div>
-				<form id="chatbot-form" autocomplete="off">
-					<input id="chatbot-input" type="text" placeholder="Ask about my experience, projects..." maxlength="500" required />
-					<button id="chatbot-send" type="submit">Send</button>
-				</form>
+		<div id="chatbot-callout" role="status" aria-live="polite">
+			<span class="callout-emoji">👋</span>
+			<span class="callout-text">Hi! Ask me about Andy</span>
+			<button class="callout-close" type="button" aria-label="Dismiss">×</button>
+		</div>
+		<button id="chatbot-toggle" aria-label="Open chat with AI assistant" title="Ask me anything about Andy">
+			<span class="chatbot-icon"><i class="fas fa-comment-dots"></i></span>
+			<span class="ai-badge" aria-hidden="true">AI</span>
+		</button>
+		<div id="chatbot-window" role="dialog" aria-label="Chat with Andy bot">
+			<div id="chatbot-header">
+				<span class="dot"></span>
+				ask_about_andy
 			</div>
-			<script>
-				(function() {
-					const ENDPOINT = "https://andy-chatbot.andylin-web.workers.dev";
+			<div id="chatbot-messages"></div>
+			<form id="chatbot-form" autocomplete="off">
+				<input id="chatbot-input" type="text" placeholder="Ask about my experience, projects..." maxlength="500" required />
+				<button id="chatbot-send" type="submit">Send</button>
+			</form>
+		</div>
+		<script>
+			(function () {
+				const ENDPOINT = "https://andy-chatbot.andylin-web.workers.dev";
 
-					const toggle = document.getElementById("chatbot-toggle");
-					const win = document.getElementById("chatbot-window");
-					const messages = document.getElementById("chatbot-messages");
-					const form = document.getElementById("chatbot-form");
-					const input = document.getElementById("chatbot-input");
-					const sendBtn = document.getElementById("chatbot-send");
+				const toggle = document.getElementById("chatbot-toggle");
+				const win = document.getElementById("chatbot-window");
+				const messages = document.getElementById("chatbot-messages");
+				const form = document.getElementById("chatbot-form");
+				const input = document.getElementById("chatbot-input");
+				const sendBtn = document.getElementById("chatbot-send");
 
-					function addMsg(text, who) {
-						const div = document.createElement("div");
-						div.className = "chatbot-msg " + who;
-						div.textContent = text;
-						messages.appendChild(div);
-						messages.scrollTop = messages.scrollHeight;
-						return div;
+				function addMsg(text, who) {
+					const div = document.createElement("div");
+					div.className = "chatbot-msg " + who;
+					div.textContent = text;
+					messages.appendChild(div);
+					messages.scrollTop = messages.scrollHeight;
+					return div;
+				}
+
+				addMsg("Hi! Ask me anything about Andy, his experience, projects, skills, or what he's working on.", "bot");
+
+				const callout = document.getElementById("chatbot-callout");
+				const calloutClose = callout.querySelector(".callout-close");
+				const iconWrap = toggle.querySelector(".chatbot-icon");
+
+				function dismissCallout() {
+					callout.classList.remove("show");
+				}
+
+				// Auto-show the callout shortly after load so visitors notice the bot
+				setTimeout(() => {
+					if (!toggle.classList.contains("interacted")) {
+						callout.classList.add("show");
 					}
+				}, 2500);
 
-					addMsg("Hi! Ask me anything about Andy - his experience, projects, skills, or what he's working on.", "bot");
+				calloutClose.addEventListener("click", (e) => {
+					e.stopPropagation();
+					toggle.classList.add("interacted");
+					dismissCallout();
+				});
 
-					toggle.addEventListener("click", () => {
-						const isOpen = win.classList.toggle("open");
-						toggle.classList.toggle("open", isOpen);
-						toggle.innerHTML = isOpen
-							? '<i class="fas fa-times"></i>'
-							: '<i class="fas fa-comment-dots"></i>';
-						if (isOpen) setTimeout(() => input.focus(), 50);
-					});
+				toggle.addEventListener("click", () => {
+					toggle.classList.add("interacted");
+					dismissCallout();
+					const isOpen = win.classList.toggle("open");
+					toggle.classList.toggle("open", isOpen);
+					iconWrap.innerHTML = isOpen
+						? '<i class="fas fa-times"></i>'
+						: '<i class="fas fa-comment-dots"></i>';
+					if (isOpen) setTimeout(() => input.focus(), 50);
+				});
 
-					form.addEventListener("submit", async (e) => {
-						e.preventDefault();
-						const text = input.value.trim();
-						if (!text) return;
+				form.addEventListener("submit", async (e) => {
+					e.preventDefault();
+					const text = input.value.trim();
+					if (!text) return;
 
-						addMsg(text, "user");
-						input.value = "";
-						sendBtn.disabled = true;
-						const typing = addMsg("Thinking…", "bot");
-						typing.classList.add("typing");
+					addMsg(text, "user");
+					input.value = "";
+					sendBtn.disabled = true;
+					const typing = addMsg("Thinking…", "bot");
+					typing.classList.add("typing");
 
-						try {
-							const res = await fetch(ENDPOINT, {
-								method: "POST",
-								headers: { "Content-Type": "application/json" },
-								body: JSON.stringify({ message: text }),
-							});
-							const data = await res.json();
-							typing.remove();
-							if (!res.ok) {
-								addMsg(data.error || "Something went wrong. Try again?", "bot");
-							} else {
-								addMsg(data.reply, "bot");
-							}
-						} catch (err) {
-							typing.remove();
-							addMsg("Couldn't reach the server. Try again in a moment.", "bot");
-						} finally {
-							sendBtn.disabled = false;
-							input.focus();
+					try {
+						const res = await fetch(ENDPOINT, {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({ message: text }),
+						});
+						const data = await res.json();
+						typing.remove();
+						if (!res.ok) {
+							addMsg(data.error || "Something went wrong. Try again?", "bot");
+						} else {
+							addMsg(data.reply, "bot");
 						}
-					});
-				})();
-			</script>
+					} catch (err) {
+						typing.remove();
+						addMsg("Couldn't reach the server. Try again in a moment.", "bot");
+					} finally {
+						sendBtn.disabled = false;
+						input.focus();
+					}
+				});
+			})();
+		</script>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-			
+		<script>
+			// Inline contact form submission (Formspree AJAX, no redirect)
+			(function () {
+				const form = document.getElementById("contact-form");
+				const status = document.getElementById("contact-status");
+				const submitBtn = form.querySelector('button[type="submit"]');
+				const originalLabel = submitBtn.textContent;
+
+				form.addEventListener("submit", async (e) => {
+					e.preventDefault();
+					status.className = "";
+					status.textContent = "";
+					submitBtn.disabled = true;
+					submitBtn.textContent = "Sending…";
+
+					try {
+						const res = await fetch(form.action, {
+							method: "POST",
+							headers: { "Accept": "application/json" },
+							body: new FormData(form),
+						});
+
+						if (res.ok) {
+							form.style.display = "none";
+							status.className = "contact-status success";
+							status.innerHTML =
+								'<div class="status-icon" aria-hidden="true">✓</div>' +
+								'<div>' +
+									'<strong>Thanks for reaching out!</strong>' +
+									"<p>I'll get back to you soon.</p>" +
+								'</div>';
+						} else {
+							const data = await res.json().catch(() => ({}));
+							const msg = (data && data.errors && data.errors.map(er => er.message).join(", "))
+								|| "Something went wrong. Please try again.";
+							status.className = "contact-status error";
+							status.textContent = msg;
+							submitBtn.disabled = false;
+							submitBtn.textContent = originalLabel;
+						}
+					} catch (err) {
+						status.className = "contact-status error";
+						status.textContent = "Couldn't reach the server. Please try again in a moment.";
+						submitBtn.disabled = false;
+						submitBtn.textContent = originalLabel;
+					}
+				});
+			})();
+		</script>
 
 	</body>
 </html>
